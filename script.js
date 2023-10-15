@@ -1,3 +1,4 @@
+game();
 function getComputerChoice(){
     // Randomly returns either Rock, Paper, or Scissors
     let randNum = Math.floor(Math.random() * 3)
@@ -24,6 +25,7 @@ function playRound(playerSelection, computerSelection){
         } else if (computerSelection.toLowerCase() == "paper"){
             return "Lose! Paper beats Rock"
         } else if (computerSelection.toLowerCase() == "scissors"){
+            updateScore();
             return "Win! Rock beats Scissors"
         }
 
@@ -32,11 +34,11 @@ function playRound(playerSelection, computerSelection){
     if (playerSelection.toLowerCase() == "paper")
     {
         if(computerSelection.toLowerCase() == "paper"){
-
             return "Tie! Paper ties paper"
         } else if (computerSelection.toLowerCase() == "scissors"){
             return "Lose! Scissors beats Paper"
         } else if (computerSelection.toLowerCase() == "rock"){
+            updateScore();
             return "Win! Paper beats Rock"
         }
 
@@ -45,7 +47,7 @@ function playRound(playerSelection, computerSelection){
     if (playerSelection.toLowerCase() == "scissors")
     {
         if(computerSelection.toLowerCase() == "paper"){
-
+            updateScore();
             return "Win! Scissors beat Paper"
         } else if (computerSelection.toLowerCase() == "scissors"){
             return "Tie! Scissors tie scissors"
@@ -57,14 +59,54 @@ function playRound(playerSelection, computerSelection){
 }
 
 const btn = document.querySelectorAll('.btn');
-btn.addEventListener('click', function (e){
-    console.log(e);
+
+btn.forEach((button) => {
+    button.addEventListener('click', function (e){
+        console.log(e);
+        switch(e.target){
+            case rock:
+                console.log(playRound("rock",getComputerChoice()));
+
+                break;
+            case paper:
+                console.log(playRound("paper",getComputerChoice()));
+                break;
+            case scissors:
+                console.log(playRound("scissors",getComputerChoice()));
+                break;
+            default:
+                console.log("bad choice")
+                break;
+        }
+    });
 });
+
+function updateScore(){
+    let curScore = document.querySelector("#container > div").textContent;
+    curScore = Number(curScore.slice(-1));
+    if(curScore+1==5){
+        console.log("Win- Game Over");
+    } else {
+        newScore = Number(curScore.slice(-1)) + 1;
+        document.querySelector("#container > div").textContent = "Score: " + newScore;
+    }
+    
+    
+}
 
 function game(){
     let playerSelection
     let computerChoice
     let rounds = 0
+    var score = 0
+
+    const divScore = document.createElement('div');
+    const container = document.querySelector('#container');
+
+    divScore.textContent="Score: " + score;
+    container.appendChild(divScore);
+    
+
     // while (rounds < 5)
     // {
     //     playerSelection = prompt("Choose Rock, Paper, or Scissors:")
@@ -73,3 +115,4 @@ function game(){
     //     rounds++
     // }
 }
+
