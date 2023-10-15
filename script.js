@@ -20,12 +20,13 @@ function playRound(playerSelection, computerSelection){
     if (playerSelection.toLowerCase() == "rock")
     {
         if(computerSelection.toLowerCase() == "rock"){
-
+            updateScore("t");
             return "Tie! Rock ties rock"
         } else if (computerSelection.toLowerCase() == "paper"){
+            updateScore("l");
             return "Lose! Paper beats Rock"
         } else if (computerSelection.toLowerCase() == "scissors"){
-            updateScore();
+            updateScore("w");
             return "Win! Rock beats Scissors"
         }
 
@@ -34,11 +35,13 @@ function playRound(playerSelection, computerSelection){
     if (playerSelection.toLowerCase() == "paper")
     {
         if(computerSelection.toLowerCase() == "paper"){
+            updateScore("t");
             return "Tie! Paper ties paper"
         } else if (computerSelection.toLowerCase() == "scissors"){
+            updateScore("l");
             return "Lose! Scissors beats Paper"
         } else if (computerSelection.toLowerCase() == "rock"){
-            updateScore();
+            updateScore("w");
             return "Win! Paper beats Rock"
         }
 
@@ -47,11 +50,13 @@ function playRound(playerSelection, computerSelection){
     if (playerSelection.toLowerCase() == "scissors")
     {
         if(computerSelection.toLowerCase() == "paper"){
-            updateScore();
+            updateScore("w");
             return "Win! Scissors beat Paper"
         } else if (computerSelection.toLowerCase() == "scissors"){
+            updateScore("t");
             return "Tie! Scissors tie scissors"
         } else if (computerSelection.toLowerCase() == "rock"){
+            updateScore("l");
             return "Lose! Rock beats Scissors"
         }
 
@@ -81,15 +86,42 @@ btn.forEach((button) => {
     });
 });
 
-function updateScore(){
-    let curScore = document.querySelector("#container > div").textContent;
-    curScore = Number(curScore.slice(-1));
-    if(curScore+1==5){
-        console.log("Win- Game Over");
-    } else {
-        newScore = Number(curScore.slice(-1)) + 1;
-        document.querySelector("#container > div").textContent = "Score: " + newScore;
+function updateScore(result){
+    let curPlayerScore = document.querySelector("#divPlayerScore").textContent;
+    let curComputerScore = document.querySelector("#divComputerScore").textContent;
+    
+    curPlayerScore = curPlayerScore.slice(-1);
+    curPlayerScore = Number(curPlayerScore);
+    curComputerScore = curComputerScore.slice(-1);
+    curComputerScore = Number(curComputerScore);
+
+    switch(result){
+        case "w":
+            if(curPlayerScore+1==5){
+                document.querySelector("#divPlayerScore").textContent = "Player Score: 0";
+                document.querySelector("#divComputerScore").textContent = "Computer Score: 0";
+                alert("You Won! Game Over!");
+        
+            } else {
+                newPlayerScore = curPlayerScore + 1;
+                document.querySelector("#divPlayerScore").textContent = "Player Score: " + newPlayerScore;
+            }
+            break;
+        case "l":
+            if(curComputerScore+1==5){
+                document.querySelector("#divComputerScore").textContent = "Computer Score: 0";
+                document.querySelector("#divPlayerScore").textContent = "Player Score: 0";
+                alert("The Computer Won! Game Over!");
+        
+            } else {
+                newComputerScore = curComputerScore + 1;
+                document.querySelector("#divComputerScore").textContent = "Computer Score: " + newComputerScore;
+            }
+            break;
     }
+
+
+
     
     
 }
@@ -100,11 +132,17 @@ function game(){
     let rounds = 0
     var score = 0
 
-    const divScore = document.createElement('div');
+    const divPlayerScore = document.createElement('div');
+    const divComputerScore = document.createElement('div');
     const container = document.querySelector('#container');
 
-    divScore.textContent="Score: " + score;
-    container.appendChild(divScore);
+    divPlayerScore.setAttribute('id','divPlayerScore');
+    divComputerScore.setAttribute('id','divComputerScore');
+
+    divPlayerScore.textContent="Player Score: " + score;
+    divComputerScore.textContent="Computer Score: " + score;
+    container.appendChild(divPlayerScore);
+    container.appendChild(divComputerScore);
     
 
     // while (rounds < 5)
